@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y apt-utils \
-    && apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2
+    && apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2 libblas-dev liblapack-dev
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install -y nodejs
@@ -17,10 +17,9 @@ RUN pip3 install --upgrade pip \
     && pip install wheel setuptools \
     && pip install pybind11 \
     && pip install Cython --find-links file:///tmp \
-    && pip install scipy pandas pysam binlorry biopython snakemake==5.8.1 --find-links file:///tmp \
+    && pip install matplotlib scipy pandas pysam binlorry biopython snakemake==5.8.1 --find-links file:///tmp \
     && pip install git+https://github.com/artic-network/Porechop.git@v0.3.2pre \
     && pip install git+https://github.com/artic-network/fieldbioinformatics.git
-
 
 # including gosu so that we can avoid the nastiness of colliding UIDs and write error
 COPY gosu-arm64 /tmp/gosu
