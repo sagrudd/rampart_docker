@@ -1,5 +1,5 @@
 
-FROM ubuntu:20.04
+FROM arm64v8/ubuntu:19.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -12,22 +12,21 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install -y nodejs
 
 # handle python and jupyter stuff
-#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+COPY WHEELS/* /tmp/
 RUN pip3 install --upgrade pip \
     && pip install wheel setuptools \
     && pip install pybind11 \
     && pip install Cython --find-links file:///tmp \
-    && pip install scipy pysam binlorry biopython snakemake \
-    && pip install git+https://github.com/artic-network/Porechop.git@v0.3.2pre
+    && pip install scipy pandas pysam binlorry biopython snakemake==5.8.1 --find-links file:///tmp \
+    && pip install git+https://github.com/artic-network/Porechop.git@v0.3.2pre \
+    && pip install git+https://github.com/artic-network/fieldbioinformatics.git
+
 
 # including gosu so that we can avoid the nastiness of colliding UIDs and write error
-COPY gosu-amd64 /tmp/gosu
+COPY gosu-arm64 /tmp/gosu
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
     && cd /opt/ \
-    && wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-    && tar -jxvpf phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-    && cp phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/bin/ \
     && mv /tmp/gosu /usr/local/bin/gosu \
     && chmod +x /usr/local/bin/gosu
 
@@ -54,7 +53,6 @@ RUN groupadd -g 1001 -r ont \
 
 USER ont:ont
 
-ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN cd /opt \
     && git clone https://github.com/artic-network/rampart.git  \
     && cd rampart \
@@ -70,3 +68,4 @@ USER root:root
 EXPOSE 3000 3001
 
 ENTRYPOINT ["/opt/docker_workflow.sh"]
+

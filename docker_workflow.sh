@@ -11,6 +11,5 @@ useradd --shell /bin/bash -u $USER_ID -o -c "" -m rampart
 
 echo "raising RAMPART on $CLIENT_PORT $SERVER_PORT"
 
-echo "cd /data && /opt/rampart/rampart.js --verbose --clearAnnotated --protocol /opt/artic-ncov2019/rampart/ --basecalledPath /data/pass --ports $CLIENT_PORT ${SERVER_PORT}"
-gosu rampart bash -c "cd /data && if ! [ -d pass ] && [ -d fastq_pass ]; then ln -s fastq_pass pass; fi && /opt/rampart/rampart.js --verbose --clearAnnotated --protocol /opt/artic-ncov2019/rampart/ --basecalledPath /data/pass --ports ${CLIENT_PORT} ${SERVER_PORT}"
+gosu rampart bash -c "cd /data && /opt/rampart/rampart.js  --verbose --clearAnnotated --protocol /opt/artic-ncov2019/rampart/ --basecalledPath /data/pass --ports ${CLIENT_PORT} ${SERVER_PORT}"
 
