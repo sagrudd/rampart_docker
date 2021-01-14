@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y apt-utils && apt-get upgrade -y
 
 RUN apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2 liblzma-dev libbz2-dev libblas-dev liblapack-dev
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash \
     && apt-get install -y nodejs
 
 # handle python and jupyter stuff
@@ -66,5 +66,5 @@ USER root:root
 
 EXPOSE 3000 3001
 
-#ENTRYPOINT ["/opt/docker_workflow.sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/opt/docker_workflow.sh"]
+#ENTRYPOINT ["/bin/bash"]
