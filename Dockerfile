@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y apt-utils \
-    && apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2
+    && apt-get install -y python3 python3-pip wget curl pigz pkg-config git minimap2
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install -y nodejs
@@ -25,9 +25,6 @@ COPY gosu-amd64 /tmp/gosu
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
     && cd /opt/ \
-    && wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-    && tar -jxvpf phantomjs-2.1.1-linux-x86_64.tar.bz2 \
-    && cp phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/bin/ \
     && mv /tmp/gosu /usr/local/bin/gosu \
     && chmod +x /usr/local/bin/gosu
 
@@ -54,7 +51,7 @@ RUN groupadd -g 1001 -r ont \
 
 USER ont:ont
 
-ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+#ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN cd /opt \
     && git clone https://github.com/artic-network/rampart.git  \
     && cd rampart \
