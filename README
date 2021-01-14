@@ -1,0 +1,4 @@
+scp /usr/share/python-wheels/*.whl minit@192.168.1.194:/data/rampart-docker/WHEELS/
+
+docker run -it -e LOCAL_USER_ID=`id -u $USER` --mount type=bind,source="$(pwd)",target=/data -p 3000:3000 -p 3001:3001 ontresearch/artic_rampart:latest
+

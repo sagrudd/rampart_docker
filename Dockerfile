@@ -1,12 +1,11 @@
 
-FROM arm64v8/ubuntu:19.10
+FROM arm64v8/ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y apt-utils \
-    && apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2 libblas-dev liblapack-dev
+RUN apt-get update && apt-get install -y apt-utils && apt-get upgrade -y
+
+RUN apt-get install -y python3 python3-pip rsync vim wget curl pigz pkg-config git samtools minimap2 liblzma-dev libbz2-dev libblas-dev liblapack-dev
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install -y nodejs
@@ -56,7 +55,8 @@ RUN cd /opt \
     && git clone https://github.com/artic-network/rampart.git  \
     && cd rampart \
     && npm install \
-    && npm run build 
+    && npm run build \
+    && npm update 
 
 COPY docker_workflow.sh /tmp/docker_workflow.sh
 RUN cp /tmp/docker_workflow.sh /opt/docker_workflow.sh \
@@ -66,5 +66,5 @@ USER root:root
 
 EXPOSE 3000 3001
 
-ENTRYPOINT ["/opt/docker_workflow.sh"]
-
+#ENTRYPOINT ["/opt/docker_workflow.sh"]
+ENTRYPOINT ["/bin/bash"]
